@@ -1,18 +1,18 @@
-import { CREATE_ORDER, SUBMIT_ORDER, updateOrder } from '../actions/order';
-import { orderComplete } from '../actions/ui';
+import { CREATE_ORDER, SUBMIT_ORDER, orderUpdate } from '../actions/order';
+import { uiOrderComplete } from '../actions/ui';
 
 export const bookOrder = ({ dispatch }) => next => action => {
   next(action);
   if (action.type === CREATE_ORDER) {
-    dispatch(updateOrder({ date: new Date(), bookId: action.payload }));
+    dispatch(orderUpdate({ date: new Date(), bookId: action.payload }));
   }
 };
 
 export const completeOrder = ({ dispatch }) => next => action => {
   next(action);
   if (action.type === SUBMIT_ORDER) {
-    dispatch(updateOrder({ email: action.payload }));
-    dispatch(orderComplete());
+    dispatch(orderUpdate({ email: action.payload }));
+    dispatch(uiOrderComplete());
   }
 };
 

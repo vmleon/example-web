@@ -1,7 +1,12 @@
-export const CREATE_ORDER = '[order] Create';
-export const UPDATE_ORDER = '[order] Update';
-export const SUBMIT_ORDER = '[order] Complete';
+import { createActions } from 'redux-actions';
+import { getActionName } from './actionUtils';
 
-export const createOrder = bookId => ({ type: CREATE_ORDER, payload: bookId });
-export const updateOrder = data => ({ type: UPDATE_ORDER, payload: data });
-export const submitOrder = email => ({ type: SUBMIT_ORDER, payload: email });
+export const CREATE_ORDER = getActionName('order', 'Create');
+export const UPDATE_ORDER = getActionName('order', 'Update');
+export const SUBMIT_ORDER = getActionName('order', 'Complete');
+
+export const { orderCreate, orderUpdate, orderSubmit } = createActions(
+  CREATE_ORDER,
+  UPDATE_ORDER,
+  SUBMIT_ORDER,
+);

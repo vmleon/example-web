@@ -6,7 +6,7 @@ import './App.css';
 import TopHeader from './TopHeader';
 import Books from './Books';
 import OrderBook from './OrderBook';
-import { getBooks, selectBooks } from '../redux/actions/books';
+import { booksGet, booksSelect } from '../redux/actions/books';
 
 class App extends Component {
   componentDidMount() {
@@ -14,9 +14,9 @@ class App extends Component {
   }
 
   renderContent = () => {
-    const { books, orderInProgress, onSelect } = this.props;
+    const { books, uiOrderInProgress, onSelect } = this.props;
 
-    return orderInProgress ? (
+    return uiOrderInProgress ? (
       <OrderBook onPlaceOrder={() => console.log('place order')} />
     ) : (
       <Books onSelect={onSelect}>{books}</Books>
@@ -64,17 +64,14 @@ class App extends Component {
 const mapStateToProps = state => ({
   pending: state.app.ui.pending,
   error: state.app.ui.error,
-  orderInProgress: state.app.ui.orderInProgress,
+  uiOrderInProgress: state.app.ui.uiOrderInProgress,
   books: state.app.books,
   order: state.app.order,
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSelect: id => dispatch(selectBooks(id)),
-  getBooks: () => dispatch(getBooks()),
+  onSelect: id => dispatch(booksSelect(id)),
+  getBooks: () => dispatch(booksGet()),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

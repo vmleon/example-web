@@ -3,11 +3,11 @@ import {
   FETCH_BOOKS_ERROR,
   GET_BOOKS,
   SELECT_BOOK,
-  updateBooks,
+  booksUpdate,
 } from '../actions/books';
-import { showSpinner, hideSpinner, showError, orderInProgress } from '../actions/ui';
+import { showSpinner, hideSpinner, uiShowError, uiOrderInProgress } from '../actions/ui';
 import { apiRequest } from '../actions/api';
-import { createOrder } from '../actions/order';
+import { orderCreate } from '../actions/order';
 
 export const URL = 'https://www.googleapis.com/books/v1/volumes?q=react';
 
@@ -15,7 +15,17 @@ export const getBooksFlow = ({ dispatch }) => next => action => {
   next(action);
 
   if (action.type === GET_BOOKS) {
-    dispatch(apiRequest('GET', URL, null, FETCH_BOOKS_SUCCESS, FETCH_BOOKS_ERROR));
+    dispatch(
+      apiRequest({
+        body: null,
+        meta: {
+          method: 'GET',
+          url: URL,
+          onSuccess: FETCH_BOOKS_SUCCESS,
+          onError: FETCH_BOOKS_ERROR,
+        },
+      }),
+    );
     dispatch(showSpinner());
   }
 };
@@ -23,7 +33,7 @@ export const getBooksFlow = ({ dispatch }) => next => action => {
 export const processBookCollection = ({ dispatch }) => next => action => {
   next(action);
   if (action.type === FETCH_BOOKS_SUCCESS) {
-    dispatch(updateBooks(action.payload.items));
+    dispatch(booksUpdate(action.payload.items));
     dispatch(hideSpinner());
   }
 };
@@ -32,15 +42,15 @@ export const processErrorFetchBooks = ({ dispatch }) => next => action => {
   next(action);
   if (action.type === FETCH_BOOKS_ERROR) {
     dispatch(hideSpinner());
-    dispatch(showError(action.payload));
+    dispatch(uiShowError(action.payload));
   }
 };
 
 export const selectBooksFlow = ({ dispatch }) => next => action => {
   next(action);
   if (action.type === SELECT_BOOK) {
-    dispatch(orderInProgress());
-    dispatch(createOrder(action.payload));
+    dispatch(uiOrderInProgress());
+    dispatch(orderCreate(action.payload));
   }
 };
 

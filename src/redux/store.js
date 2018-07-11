@@ -10,7 +10,6 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const { reducer, middleware, enhancer } = routerForBrowser({
   routes,
-  basename: '/',
 });
 
 export const store = createStore(

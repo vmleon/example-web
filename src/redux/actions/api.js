@@ -1,7 +1,6 @@
-export const API_REQUEST = '[app] API Request';
+import { createAction } from 'redux-actions';
+import { getActionName } from './actionUtils';
 
-export const apiRequest = (method, url, body, onSuccess, onError) => ({
-  type: API_REQUEST,
-  payload: body,
-  meta: { method, url, onSuccess, onError },
-});
+export const API_REQUEST = getActionName('app', 'API Request');
+
+export const apiRequest = createAction(API_REQUEST, ({ body }) => body, ({ meta }) => meta);
